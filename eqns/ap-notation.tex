@@ -1,0 +1,261 @@
+\chapter{Coordinate-free Tensor Notation}\label{app:notation}
+
+Throughout this paper we have used a coordinate free notation based on
+an extended form of the notation adopted in\cite{Thorne:2017}.  In
+this appendix, we present an overview of our notation for ease of
+following the derivations in the main text of the paper.
+
+When working in flat 3D space we denote the vector space as
+$\vecspace$.  Given two or more vectors in $\vecspace$, we will denote
+their \emph{tensor product} with the $\otimes$ symbol.  For example,
+given $\mvec{u}, \mvec{v} \in \vecspace$, we can write their
+tensor-product as $\mvec{u}\otimes\mvec{v}$.  The tensor-product
+creates a \emph{multilinear mapping} from $n$ vectors, where $n$ is
+the number of vectors in the product, to a real number.  Given
+$\mvec{u}\otimes\mvec{v}$, the mapping is
+$\mvec{u}\otimes\mvec{v} : \vecspace\times \vecspace \rightarrow
+\mathbb{R}$, and we can evaluate it for the vectors $\mvec{a}$ and
+$\mvec{b}$ as follows
+\begin{align}
+  (\mvec{u}\otimes\mvec{v})(\mvec{a}, \mvec{b}) =
+  (\mvec{u}\cdot\mvec{a}) (\mvec{v}\cdot\mvec{b}).
+\end{align}
+
+A tensor of rank $n$ is a \emph{multilinear function} that takes $n$ vectors and maps them to a real number. 
+For example, a second order tensor $\mvec{T}(\mvec{a},\mvec{b})$ will take two input vectors
+($\mvec{a}$ and $\mvec{b}$ in this case) and produce a single scalar. 
+As the mapping is multilinear we have
+\begin{align}
+  \mvec{T}(\alpha\mvec{a} + \delta\mvec{d},\mvec{b})
+  =
+  \alpha\mvec{T}(\mvec{a},\mvec{b})
+  +
+  \delta\mvec{T}(\mvec{d},\mvec{b}).
+\end{align}
+In this sense, a scalar is a rank-0 tensor, that simply evaluates to itself. 
+A vector $\mvec{u}$ is a rank-1 tensor mapping an input vector $\mvec{a}$ to
+\begin{align}
+  \mvec{u}(\mvec{a}) = \mvec{u}\cdot\mvec{a}.
+\end{align}
+Defined in this manner, rank-$n$ tensors (including vectors) are \emph{geometric} quantities, hence independent of the basis vectors used to represent them.
+
+We can introduce a set of basis vectors $\basis{i}$, $i=1,2,3$, for $\vecspace$. 
+These basis vectors need not be orthogonal (or even unit) vectors. 
+Given these basis vectors, we can construct a set of \emph{dual basis} $\dbasis{i}$ defined such that $\basis{i}\cdot\dbasis{j} = \delta_i^j$. 
+In flat space, we can always introduce a set of orthonormal basis $\cbas{i}$, with $i=1,2,3$. 
+These orthonormal basis are their own duals.
+
+Now, if we feed a vector with one of the basis $\basis{i}$ or $\dbasis{i}$, we will get
+\begin{align}
+  \mvec{u}(\basis{i}) & = \mvec{u}\cdot\basis{i} \equiv u_i, \\
+  \mvec{u}(\dbasis{i}) & = \mvec{u}\cdot\dbasis{i} \equiv u^i.
+\end{align}
+Hence, with the basis as an input, the vector mapping produces the \emph{component} of the vector along that basis. 
+Analogously, we will define the components of a higher-rank tensor as the real numbers produced when the input vectors are the basis. 
+So
+\begin{align}
+  T_{ij} & \equiv \mvec{T}(\basis{i},\basis{j}), \\
+  T^{ij} & \equiv \mvec{T}(\dbasis{i},\dbasis{j}). 
+\end{align}
+
+Since tensors are multilinear mappings, in a specific basis, we can write them as linear combinations of the tensor products of the selected basis. 
+For example,
+\begin{align}
+  \mvec{T} =
+  T^{ij} \basis{i}\otimes\basis{j}
+  =
+  \mvec{T}(\dbasis{i},\dbasis{j}) \basis{i}\otimes\basis{j}
+  = T_{ij} \dbasis{i}\otimes\dbasis{j}
+  =
+  \mvec{T}(\basis{i},\basis{j}) \dbasis{i}\otimes\dbasis{j}.
+\end{align}
+Hence, using the components, we can write an explicit formula for the evaluation of the multilinear form in terms of its components as
+\begin{align}
+  \mvec{T}(\mvec{a},\mvec{b}) = T^{ij}
+  (\mvec{a}\cdot \basis{i}) (\mvec{b}\cdot \basis{j})
+  =
+  T^{ij} a_i b_j
+  =
+  T_{ij}
+  (\mvec{a}\cdot \dbasis{i}) (\mvec{b}\cdot \dbasis{j})
+  =
+  T_{ij} a^i b^j.
+\end{align}
+Note that throughout we are using the Einstein summation convention: repeated upstairs/downstairs indices are to be summed.
+
+We can also compute the partial evaluation of the tensor by filling up one or more of its slots with vectors. 
+The resulting function (taking fewer input parameters) is also a tensor, but a  lower rank tensor. 
+For example $\mvec{T}(\mvec{a},\_)$ results in a vector (rank-1 tensor). 
+In a specific representation,
+\begin{align}
+  \mvec{T}(\mvec{a},\_) = T^{ij} \mvec{a}\cdot
+  (\bbasis{i}\otimes\basis{j})
+  = T^{ij} (\mvec{a}\cdot\basis{i}) \basis{j},
+\end{align}
+where we have used the ``breve'' marker on the $\basis{i}$ to indicate with which of the vectors making up the tensor product the dot-product must be taken. 
+Similarly,
+\begin{align}
+  \mvec{T}(\_,\mvec{a}) = T^{ij} \mvec{a}\cdot
+  (\basis{i}\otimes\bbasis{j})
+  = T^{ij} \basis{i}(\mvec{a}\cdot\basis{j}).
+\end{align}
+Of course, we do not need to use the tangent or their reciprocals to represent tensors. 
+As they are geometric objects, any basis will do, for example, the normalized tangent vectors. 
+Once the components are known in one set of basis, we can simply compute them in another basis by evaluating, for example,
+\begin{align}
+  \mvec{T}(\nbasis{i},\nbasis{j}) \equiv \hat{T}_{ij}
+  = {T}_{mn} (\nbasis{i}\cdot\dbasis{m}) (\nbasis{j}\cdot\dbasis{n}).
+\end{align}
+
+The \emph{trace} of a tensor product is a linear operator defined as, for example,
+\begin{align}
+  \Tr(\mvec{u}\otimes\mvec{v}) \equiv \mvec{u}\cdot\mvec{v}.
+\end{align}
+For products with more than two vectors, we need to indicate the pair of vectors on which the trace operator acts. 
+For example,
+\begin{align}
+  \Tr(\bmvec{u}\otimes\mvec{v}\otimes\bmvec{w}) =
+  (\mvec{u}\cdot\mvec{w}) \mvec{v}.
+\end{align}
+Here, we used the ``breve'' marker on the vectors we wish to participate in the trace. 
+Just like partial evaluation, the trace operator is also a rank-reducing operation: the resulting object has \emph{two} ranks lower than the original tensor.
+
+The dot-product operator can be extended to act on a pair of tensors. 
+To define this operation, consider we want to compute the dot-product between a vector $\mvec{u}$ and a second-order tensor $\mvec{T}$. 
+We first need to select the slot of the tensor with which we wish to take the product. 
+For example, we will denote the dot-product with the first slot as $\mvec{u}\cdot\mvec{T}(\bdum,\_)$ and define this to be just the partial evaluation $\mvec{T}(\mvec{u},\_)$. 
+Similarly, $\mvec{u}\cdot\mvec{T}(\_,\bdum) = \mvec{T}(\_,\mvec{u})$.
+
+The \emph{metric tensor} is a special bilinear mapping
+\begin{align}
+  \mvec{g}(\mvec{a},\mvec{b}) = \mvec{a}\cdot\mvec{b}.
+\end{align}
+From this definition, we see that the partial evaluation of the metric tensor is particularly simple:
+\begin{align}
+  \mvec{a}\cdot\mvec{g}(\bdum,\_) = \mvec{g}(\mvec{a},\_) = \mvec{a}.
+\end{align}
+We can compute the \emph{components} of the metric tensor as
+\begin{align}
+  \mvec{g}(\basis{i},\basis{j}) &= \basis{i}\cdot\basis{j} \equiv g_{ij}, \\
+  \mvec{g}(\dbasis{i},\dbasis{j}) &= \dbasis{i}\cdot\dbasis{j} \equiv g^{ij}.  
+\end{align}
+There are two useful alternative expressions for the metric tensor, first in terms of the basis and their duals as
+\begin{align}
+  \mvec{g} = \basis{i}\otimes\dbasis{i} = \dbasis{i}\otimes\basis{i}.
+\end{align}
+The second useful expression is
+\begin{align}
+  \mvec{g} = \nabla\otimes\mvec{x},
+\end{align}
+where $\nabla$ is the vector derivative operator, and $\mvec{x}$ is the position-vector in space. 
+Note that all these expressions are independent of dimensions and applicable to not just 3D space. 
+These expressions also show that for Euclidean space
+\begin{align}
+  \Tr(\mvec{g}) = \sum_{i=1}^D \basis{i}\cdot\dbasis{i} = \sum_{i=1}^D \delta_i^i = D,
+\end{align}
+where $D$ is the dimension of the space.
+
+Now consider any vector $\mvec{u}$ and write
+\begin{align}
+  u^i = \mvec{u}\cdot\dbasis{i} = (\mvec{u}\cdot\basis{j})
+  (\dbasis{j}\cdot\dbasis{i})
+  = g^{ij} u_j.
+\end{align}
+Similarly, we have
+\begin{align}
+  u_i = \mvec{u}\cdot\basis{i} = (\mvec{u}\cdot\dbasis{j})
+  (\basis{j}\cdot\basis{i})
+  = g_{ij} u^j.
+\end{align}
+This process is sometimes called \emph{raising} and \emph{lowering} of indices, and extends to tensors of any rank. 
+In fact, we can also easily show that
+\begin{align}
+  \dbasis{i} &= g^{ij}\basis{j}, \\
+  \basis{i} &= g_{ij}\dbasis{j}.
+\end{align}
+These expressions are useful to replace the basis vectors for their reciprocals (and vice-versa).
+
+Notice that we must distinguish between a tensor $\mvec{T}$, its \emph{definition}, for example $\mvec{T} = \mvec{u}\otimes\mvec{v}$, and its \emph{evaluation} $\mvec{T}(\mvec{a},\mvec{b})$. 
+It is helpful to think of tensors as functions in a programming language: there, also one must distinguish between the \emph{name}, the \emph{definition}, and its \emph{evaluation}.
+
+Finally, we remark that tensors are a very special, but important, class amongst general scalar-valued functions. 
+In general, an arbitrary function $f : \vecspace\rightarrow \mathbb{R}$ need not be linear. 
+For example, $f(\mvec{u}) = \mvec{u}\cdot\mvec{u}$ is a quadratic function of its input vector and hence is not a tensor.
+
+
+Second-order tensors, also called \emph{dyads}, appear frequently in mathematical physics. 
+We shall define a \emph{dyadic product} as follows. 
+Let $\mvec{T}$ be a second-order tensor and $\mvec{u}$ and $\mvec{v}$ be vectors. 
+Then the dyadic product is denoted by the $:$ symbol and is defined as
+\begin{align}
+  \mvec{T} : \mvec{u}\otimes \mvec{v} \equiv
+  \mvec{T}(\mvec{u}, \mvec{v}).
+\end{align}
+In particular, if $\mvec{T} = \mvec{a}\otimes \mvec{b}$, then
+\begin{align}
+  \mvec{a}\otimes \mvec{b} : \mvec{u}\otimes \mvec{v} =
+  (\mvec{a}\cdot\mvec{u}) (\mvec{b}\cdot\mvec{v}).
+  \label{eq:dyadic-prod}
+\end{align}
+Now, let $\mvec{T}$ and $\mvec{G}$ be two dyads. 
+Then the above definitions can be used to write the dyadic product in term of the dyad representation in a particular basis as
+\begin{align}
+  \mvec{T} : \mvec{G}
+  =
+  \mvec{T} : G_{ij} \dbasis{i}\otimes\dbasis{j}
+  =
+  \mvec{T}(\dbasis{i},\dbasis{j}) G_{ij}
+  =
+  T^{ij} G_{ij}.
+\end{align}
+This operation also shows that $\mvec{T} : \mvec{G} = \mvec{G} : \mvec{T}$.  
+The dyadic product is a \emph{rank reducing} operator: it takes two second-order tensors and produces a scalar.
+
+From the definitions, we can also see that the dyadic product with the metric-tensor is particularly simple
+\begin{align}
+  \mvec{g} : \mvec{T}
+  =
+  \Tr(\mvec{T}).
+\end{align}
+From this result, it follows that $\mvec{g}:\mvec{g} = D$, where, as defined before, $D$ is the dimension of the space. 
+
+Besides the dot-product (valid in a space of any dimension), we can also define the cross-product in 3D as follow. 
+The cross-product of two vectors is denoted by $\mvec{b}\times\mvec{c}$ and results in a vector. 
+Here we will consider a different approach to the cross product by defining a \emph{third}-order tensor $\veps(\mvec{a},\mvec{b},\mvec{c})$ as
+\begin{align}
+  \veps(\mvec{a},\mvec{b},\mvec{c}) =
+  \mvec{a}\cdot(\mvec{b}\times\mvec{c}).
+\end{align}
+The partial evaluation of this tensor with two of its slots filled gives
+\begin{align}
+  \veps(\_,\mvec{b},\mvec{c}) = \mvec{b}\times\mvec{c},
+\end{align}
+that is, the resulting vector has the same components as the cross-product of $\mvec{b}$ and $\mvec{c}$. 
+Hence, the second-order tensor that results from filling in the last slot, $\veps(\_,\_,\mvec{c})$, has the property that
+\begin{align}
+  \mvec{b}\cdot\veps(\_,\bdum,\mvec{c})
+  = \veps(\_,\mvec{b},\mvec{c}) = \mvec{b}\times\mvec{c}.
+\end{align}
+We have thus written the cross-product as a dot-product between a vector and a special second-order tensor. 
+As with the dot-product, we can take the cross-product between tensors. 
+For example, consider the cross-product between a vector $\mvec{u}$ and a second-order tensor $\mvec{a}\otimes\mvec{b}$. 
+We need to specify which of the vectors making up the second-order tensor with which we wish to cross. 
+For example,
+\begin{align}
+  \mvec{u}\times(\bmvec{a}\otimes\mvec{b}) = (\mvec{u}\times\mvec{a})\otimes\mvec{b},
+\end{align}
+is the cross-product with the first slot of the tensor, and 
+\begin{align}
+  \mvec{u}\times(\mvec{a}\otimes\bmvec{b}) =\mvec{a}\otimes(\mvec{u}\times\mvec{b}),
+\end{align}
+is the cross-product with the second slot of the tensor. Applying this operation to a general second order tensor $\mvec{P}$, we can write
+\begin{align}
+  \mvec{u}\times\mvec{P}(\bdum,\_) =
+  P^{mn} (\mvec{u}\times\basis{m})\otimes\basis{n}.
+\end{align}
+Notice that the cross-product of a vector with a second-order tensor is a second-order tensor. 
+If $\mvec{P}$ is \emph{symmetric}, then the second-order tensor
+\begin{align}
+  \mvec{u}\times\mvec{P}(\bdum,\_) + \mvec{u}\times\mvec{P}(\_,\bdum),
+\end{align}
+is also symmetric.
