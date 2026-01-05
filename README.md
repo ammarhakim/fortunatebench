@@ -51,4 +51,3 @@ others. You can contribute in several ways:
 Please make a branch or fork the repo and submit a PR. We will examine
 the PR, give you feedback and merge when ready. Our goal is to be err
 on the side of inclusion, so please do not hesistate to contribute!
-
