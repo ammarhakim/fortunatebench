@@ -15,7 +15,7 @@ We aim to provide input files for each of the benchmark problems so
 others can generate the data for their own models, or compare their
 numerical methods on the benchmarks we provide.
 
-There are two objectives:
+We have a few key objectives:
 
 1. To list the equations for major models used in plasma physics,
    along with some common extensions, conserved quantities, and a
@@ -28,7 +28,11 @@ There are two objectives:
 3. Provide access to our BEACONS-FM (Bounded Extrapolatory Composable
    Neural Surrogate - Foundation Model) code so others can use it for
    their research.
-   
+
+4. Provide a formal representation of the all the equation systems
+   described here in a manner suitable to for use in computer algebra
+   systems (CAS), and for constructing formal proofs of various
+   properties.
    
 ## Contributing to fortunatebench
 
