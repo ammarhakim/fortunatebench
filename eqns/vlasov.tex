@@ -27,7 +27,7 @@ $d\mvec{x}\thinspace d\mvec{v}$, the Vlasov equation may be written as
    + \gcs \cdot (\mathbf{v}f_s)
    + \gvs \cdot (\mathbf{a}_s f_s)
    =
-  \mathcal{H}^s,
+  \mathcal{H}_s,
   \label{eq:boltz}
 \end{align}
 where the acceleration of species $s$ is defined as
@@ -36,7 +36,7 @@ where the acceleration of species $s$ is defined as
 \end{align}
 Here $\mvec{E}$ is the electric field, $\mvec{B}$ is the magnetic
 field, $q_s$ and $m_s$ are the charge and mass of the plasma species,
-and $\mathcal{H}^s$ are collision terms. We provide expressions for
+and $\mathcal{H}_s$ are collision terms. We provide expressions for
 collisions below. The electromagnetic fields are evolved with Maxwell
 equations
 \begin{align}
@@ -114,3 +114,248 @@ surface terms vanish.
   We remark that when collisions are included the $L_2$ norm of the
   distribution function and the entropy decay monotonically.
 \end{remark}
+
+\begin{proposition}
+  The Vlasov-Maxwell system conserves total (particle plus field)
+  momentum:
+  \begin{align}
+    \frac{d}{dt} \int_\Omega 
+    \left(
+    \sum_s \langle m_s \mvec{v} \rangle_s + \epsilon_0 \mvec{E}\times\mvec{B}
+    \right) 
+    d^3\mvec{x} = 0.
+  \end{align}
+\end{proposition}
+
+\begin{proposition}
+  The Vlasov-Maxwell system conserves total (particle plus field)
+  energy:
+  \begin{align}
+    \frac{d}{dt} \int_\Omega 
+    \left(
+    \sum_s \langle \frac{1}{2} m_s \mvec{v}^2 \rangle_s + 
+    \frac{\epsilon_0}{2} \mvec{E}^2 + \frac{1}{2\mu_0} \mvec{B}^2
+    \right) 
+    d^3\mvec{x} = 0.
+  \end{align}
+\end{proposition}
+
+\begin{remark}
+  The conservation laws above are \emph{global conservation laws},
+  that is, involve the total (integrated over space)
+  quantities. However, in general, \emph{local} conservation laws are
+  far more powerful. The latter essentially state how quantities
+  inside an arbitrary volume (and not just the whole space) change via
+  fluxes through the surface bounding that volume.
+\end{remark}
+
+\section{Fokker-Planck Collision Operator}
+
+The most complete collision operator is the \emph{Fokker-Planck
+  operator} (FPO). Unfortunately, the FPO is notoriously complicated
+and nonlinear and hence one often uses approximate collision
+operators instead. In the following sections we list two such
+operators, the Dougherty Lenard-Bernstein operator, and the
+Bhatnagar-Gross-Krook operator.
+
+In a multi-species plasma the FPO can be written as (see
+NRL Plasma Formulary and the original Rosenbluth, MacDonald and Judd
+(RMJ) paper\cite{Rosenbluth:1957}\footnote{Historically, the first
+  derivation of the FPO in the case of Coulomb (inverse square law)
+  was by Lev Landau in 1936\cite{Landau:1936}. Landau, however, writes
+  the equation in an integral form and does not introduce the
+  potentials as RMJ did. Curiously, the 1957 paper by RMJ does not
+  mention Landau's work at all. The original papers remain highly
+  readable and still provide the best derivations of the equations.})
+\begin{align}
+  \mathcal{H}_s = - \gvs\cdot
+  \big[
+  \mvec{a}_s f_s - \frac{1}{2} \gvs\cdot\left( \mvec{D}_s f_s \right)
+  \big]
+   \label{eq:fpo}
+\end{align}
+where recall that $\gvs$ operator is the gradient operator in
+\emph{velocity space}. The drag velocity and diffusion tensor are
+given by
+\begin{align}
+  \mvec{a}_s &= \gvs h_s \\
+  \mvec{D}_s &= \gvs\otimes\gvs g_s
+\end{align}
+where
+\begin{align}
+  h_s &= \sum_b \Gamma_{sb} \bigg( 1 + \frac{m_s}{m_b} \bigg) H_b  \\
+  g_s &= \sum_b \Gamma_{sb} G_b.
+\end{align}
+are scalar potentials. Here
+\begin{align}
+  \Gamma_{ab} = 4\pi\lambda_{ab}\frac{q_a^2 q_b^2}{m_a^2}
+\end{align}
+where $\lambda_{ab}$ is the Coulomb logarithm, and $q_a$ and $m_a$ are
+the charge and mass of the species respectively.  The potentials $H_s$
+and $G_s$ are the Rosenbluth potentials and are determined from
+\begin{align}
+  H_s(\mvec{v}) &=  \int \frac{f_s(\mvec{v}')}{ |\mvec{v}-\mvec{v}'|} \thinspace d^3\mvec{v}',  \label{eq:Ha} \\
+  G_s(\mvec{v}) &= \int f_s(\mvec{v}') | \mvec{v}-\mvec{v}'| \thinspace d^3\mvec{v}'. \label{eq:Ga}
+\end{align}
+Using the identity
+\begin{align}
+  \gvs^2|\mvec{v}-\mvec{v}'|^{-1}
+  = -4\pi\delta^3(\mvec{v}-\mvec{v}')
+\end{align}
+and as $\gvs^2 |\mvec{v}| = 2/|\mvec{v}|$ we can derive alternate
+expressions for the Rosenbluth potentials as
+\begin{align}
+  \gvs^2 H_s &= -4\pi f_s \\
+  \gvs^2 G_s &= 2 H_s.
+\end{align}
+
+As is clear from these equations, the FPO is a complicated 3D (in
+velocity space) nonlinear integro-differential equation, coupling all
+species via the Rosenbluth potentials. Its solutions display rich
+structure, specially when combined with the particle motion in
+self-consistent electromagnetic fields. Designing a general production
+solver for the case of multi-species FPO poses a formidable challenge.
+
+I should mention that this is not the \emph{exact} form of the FPO as
+given in the RMJ paper. There they assume that all species have the
+\emph{same} absolute value of charge $|e|$, allowing them to write
+$\Gamma_a = \Gamma_{aa}$. With this assumption a little algebra shows
+that the equations listed above are indeed identical to the ones in
+the RMJ paper.
+
+We can easily derive the following two relations:
+\begin{align}
+  \Tr(\mvec{D}_s) = \gvs^2 g_s = 2\sum_b \Gamma_{sb} H_b
+\end{align}
+and\footnote{We have
+    $\breve{\nabla}\cdot(\nabla\otimes\breve{\nabla} g_s) 
+    = \Tr(\breve{\nabla}\otimes\nabla\otimes\breve{\nabla} g_s)
+    = \nabla\otimes \Tr(\nabla\otimes\nabla g_s)
+    = \nabla \nabla^2 g_s
+    $.
+}
+\begin{align}
+  \gvs\cdot\mvec{D}_s =
+  \gvs\cdot(\gvs\otimes\gvs g_s)
+  = \gvs \gvs^2 g_s
+  = 2 \sum_b \Gamma_{sb} \gvs H_b.
+\end{align}
+As
+$\gvs\cdot\left( \mvec{D}_s f_s \right) = f_s \gvs\cdot \mvec{D}_s
++ \gvs f_s\cdot \mvec{D}_s$ the latter expression allows us to write
+the FPO as
+\begin{align}
+  \mathcal{H}_s = - \frac{1}{2} \gvs\cdot
+  \big[
+  \underbrace{\mvec{a}'_s f_s}_{\textrm{drag}}
+  -
+  \underbrace{\gvs f_s \cdot\mvec{D}_s}_{\textrm{diffusion}}
+  \big]
+  \label{eq:fpo-2}
+\end{align}
+where
+\begin{align}
+  \frac{1}{2}\mvec{a}'_s = \mvec{a}_s - \sum_b \Gamma_{sb} \gvs H_b
+  = \sum_b \Gamma_{sb} \frac{m_s}{m_b} \gvs H_b.
+\end{align}
+Written in the form \eqr{\ref{eq:fpo-2}} the FPO clearly has two
+competing terms: the first \emph{drag} term and the second the
+\emph{diffusion} term. For the special case of a single species we
+have $h_s = 2\Gamma_s H_s$ and rather elegantly,
+$\mvec{a}'_s = \mvec{a}_s$.
+
+\section{Dougherty Lenard-Bernstein Operator}
+
+A simplified collision operator that is often used is the Dougherty
+Lenard-Bernstein operator (DLBO). This has the same structure as the
+FPO, \eqr{\ref{eq:fpo}}, except that the drag velocity and diffusion
+tensor are determined from
+\begin{align}
+  \mvec{a}_{s} &= -\nu_{ss} (\mvec{v}-\mvec{u}_s) 
+                 - \sum_{r\ne s} \nu_{sr} (\mvec{v}-\mvec{u}_{sr})  \label{eq:dlbo-a} \\
+  \mvec{D}_{s} &= 2 \nu_{ss}v_{th,s}^2 \mvec{g}_{\mvec{v}}  +
+                 \sum_{r\ne s} 2 \nu_{sr}v_{th,sr}^2 \mvec{g}_{\mvec{v}} \label{eq:dlbo-D}
+\end{align}
+where $\mvec{g}_{\mvec{v}}$ is the metric tensor in velocity
+space. Further, $\nu_{sr}$ is the collision frequency between
+particles of species $s$ and $r$, and $\mvec{u}_s$ and
+$v_{th,s} = \sqrt{T_s/m_s}$ are the mean (drift) velocity and thermal
+speed of particles of species $s$ respectively, and the quantities
+with subscript $sr$ are intermediate quantities that need to be
+determined (partly) from momentum and energy conservation, that is
+chosen to satisfy \eqr{\ref{eq:mom-constraint}} and
+\eqr{\ref{eq:energy-constraint}}. See\cite{Francisquez:2022} for
+details on how the intermediate quantities can be determined.
+
+\section{Conservation Properties and Constraints For FPO-Type
+  Collision Operators}
+
+The FPO conserves the particle count, total momentum and total
+energy. Starting from \eqr{\ref{eq:fpo}} we can derive the constraints
+to ensure momentum and energy by taking $m_s\mvec{v}$ and $m_s v^2/2$
+moments to arrive at the following constraint
+\begin{align}
+  \sum_s \int_{-\infty}^\infty m_s \mvec{a}_s f_s \thinspace
+  d^3\mvec{v} = 0 \label{eq:mom-constraint}
+\end{align}
+for momentum conservation, and
+\begin{align}
+  \sum_s \int_{-\infty}^\infty m_s
+  \left[
+  \mvec{v}\cdot\mvec{a}_s + \frac{1}{2}\Tr(\mvec{D}_s)
+  \right]
+  f_s \thinspace d^3\mvec{v} = 0 \label{eq:energy-constraint}
+\end{align}
+for energy conservation.
+
+\begin{remark}
+  These constraints depend only on the form of \eqr{\ref{eq:fpo}} and
+  not on the details of how $\mvec{a}$ and $\mvec{D}$ are
+  computed. Hence, we must show that for the \emph{specific case} of
+  FPO in which the drag and diffusion terms are computed from
+  Rosenbluth potentials, they are indeed satisfied. If we instead
+  choose to use the DLBO then we must also ensure that these
+  constraints are satisfied, but now for the expressions
+  Eqns.\thinspace(\ref{eq:dlbo-a}) and (\ref{eq:dlbo-D}).
+\end{remark}
+
+\section{Bhatnagar-Gross-Krook Collision Operator}
+
+An even simpler collision operator is the \emph{Bhatnagar-Gross-Krook}
+(BGK) collision operator. This operator relaxes the distribution
+function to a local Maxwellian for that species. We can write this as
+$\mathcal{H}_s = \mathcal{H}_{ss} + \sum_{r\ne s} \mathcal{H}_{sr}$,
+where
+\begin{align}
+  \mathcal{H}_{ss} = 
+    \nu_{ss}
+    \big(
+    f_{Ms} - f_s
+    \big); \quad
+  \mathcal{H}_{sr} = 
+    \nu_{sr}
+    \big(
+    f_{Msr} - f_s
+    \big)
+\end{align}
+where $\nu_{sr}$ is the collision-frequency of species $s$ with
+species $r$ and $f_{Ms}$, $f_{Msr}$ are a Maxwellians given by
+\begin{align}
+  &f_{Ms} = n_s 
+    \left(
+    \frac{m_s}{2\pi T_s}
+    \right)^{3/2}
+    e^{-m_s (\mvec{v}-\mvec{u}_s)^2/ 2T_s} \\
+  &f_{Msr} = n_s 
+    \left(
+    \frac{m_s}{2\pi T_{sr}}
+    \right)^{3/2}
+    e^{-m_s (\mvec{v}-\mvec{u}_{sr})^2/ 2T_{sr}}
+\end{align}
+and where $\mvec{u}_{sr}$ and $T_{sr}$ are intermediate velocities and
+temperatures. Greene\cite{Greene:1973} provides an approach to
+constructing these quantities based on conservation of momentum and
+energy. We note that the description of BGK operator in the NRL Plasma
+Formulary is misleading as it seems to indicate that the operator is
+not conservative. It is hence best to refer to the original
+Greene\cite{Greene:1973} paper.
